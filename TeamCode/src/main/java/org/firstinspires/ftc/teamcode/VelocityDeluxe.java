@@ -30,6 +30,7 @@ public class VelocityDeluxe extends LinearOpMode {
         shooterMotor2 = hardwareMap.get(DcMotorEx.class, "shootMotor2");
         shooterMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         shooterMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooterMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         shooterMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
         while(opModeIsActive()) {
