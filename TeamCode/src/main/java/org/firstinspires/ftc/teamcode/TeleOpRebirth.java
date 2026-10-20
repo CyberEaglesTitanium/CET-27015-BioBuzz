@@ -20,7 +20,7 @@ public class TeleOpRebirth extends LinearOpMode {
         backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
 
-        frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        backLeft.setDirection(DcMotorEx.Direction.REVERSE);
 
         waitForStart();
         while(opModeIsActive()) {
