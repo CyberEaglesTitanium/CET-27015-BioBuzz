@@ -126,12 +126,12 @@ public class VelocityDeluxe extends LinearOpMode {
 //            }
 
             // so what if i just stole the code from last season
-            if (lastRecordedArea <= 0.5) {
-                currentVel = 472;
-            } else if (lastRecordedArea > 0.5 && lastRecordedArea < 2) {
-                currentVel = 944;
-            } else if (lastRecordedArea >= 2) {
+            if (lastRecordedArea <= 3) {
                 currentVel = 1416;
+            } else if (lastRecordedArea > 3 && lastRecordedArea < 10) {
+                currentVel = 944;
+            } else if (lastRecordedArea >= 10) {
+                currentVel = 472;
             }
         }
     }
