@@ -87,11 +87,11 @@ public class VelocityDeluxe extends LinearOpMode {
             telemetry.update();
 
             if (toggle) {
-                locatify();
+//                locatify();
                 shooterMotor.setVelocity(currentVel);
                 shooterMotor2.setVelocity(currentVel);
             } else {
-                limelight.pipelineSwitch(0);
+//                limelight.pipelineSwitch(0);
                 shooterMotor.setVelocity(0);
                 shooterMotor2.setVelocity(0);
             }
@@ -126,13 +126,13 @@ public class VelocityDeluxe extends LinearOpMode {
 //            }
 
             // so what if i just stole the code from last season
-            if (lastRecordedArea <= 3) {
-                currentVel = 1416;
-            } else if (lastRecordedArea > 3 && lastRecordedArea < 10) {
-                currentVel = 944;
-            } else if (lastRecordedArea >= 10) {
-                currentVel = 472;
-            }
+//            if (lastRecordedArea <= 3) {
+//                currentVel = 1416;
+//            } else if (lastRecordedArea > 3 && lastRecordedArea < 10) {
+//                currentVel = 944;
+//            } else if (lastRecordedArea >= 10) {
+//                currentVel = 472;
+//            }
         }
     }
 }

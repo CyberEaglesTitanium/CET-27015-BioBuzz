@@ -4,9 +4,11 @@ import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
@@ -23,6 +25,11 @@ public class TeleOpRebirth extends LinearOpMode {
     public DcMotorEx shooterMotor;
     // my god there's two of them
     public DcMotorEx shooterMotor2;
+
+    public CRServo turretServo;
+    public DigitalChannel magLimit;
+
+    public DcMotorEx intakeMotor;
 
     public boolean toggle = false;
     public double currentVel = 1416;
@@ -79,6 +86,11 @@ public class TeleOpRebirth extends LinearOpMode {
         shooterMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         shooterMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         shooterMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
+
+//        turretServo = hardwareMap.get(CRServo.class, "turretServo");
+//        magLimit = hardwareMap.get(DigitalChannel.class, "magLimit");
+
+        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
 
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.setPollRateHz(100); // This sets how often we ask Limelight for data (100 times per second)
@@ -137,6 +149,12 @@ public class TeleOpRebirth extends LinearOpMode {
                 toggle = !toggle;
             }
 
+//            if (gamepad1.left_bumper) {
+//                turretServo.setPower(1);
+//            } else if (gamepad1.right_bumper) {
+//                turretServo.setPower(-1);
+//            }
+
             if (gamepad1.dpadUpWasPressed() && currentVel < 2360) {
                 currentVel += 236;
             } else if (gamepad1.dpadDownWasPressed() && currentVel > 0) {
@@ -149,7 +167,12 @@ public class TeleOpRebirth extends LinearOpMode {
                 currentVel = velPresetOff;
             }
 
-            // TODO: future home of limelight
+            if (gamepad2.a) {
+                intakeMotor.setPower(1);
+            } else {
+                intakeMotor.setPower(0);
+            }
+
             /* 以下のコードは、「コントローラ2」が動作する必要があります。
             translation: The following code requires "controller 2" for operation. */
 //            if (gamepad2.aWasPressed()) {
