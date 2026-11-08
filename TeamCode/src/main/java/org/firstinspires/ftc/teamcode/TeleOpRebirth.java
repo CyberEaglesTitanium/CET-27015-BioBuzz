@@ -32,6 +32,8 @@ public class TeleOpRebirth extends LinearOpMode {
     public DcMotorEx intakeMotor;
 
     public boolean toggle = false;
+    public boolean intakeToggle = false;
+
     public double currentVel = 1416;
     public double velPresetOff = 0;
 
@@ -136,11 +138,11 @@ public class TeleOpRebirth extends LinearOpMode {
             backRight.setPower(rightBackPower /= 1.8);
 
             if (toggle) {
-                locatify();
+            //    locatify();
                 shooterMotor.setVelocity(currentVel);
                 shooterMotor2.setVelocity(currentVel);
             } else {
-                limelight.pipelineSwitch(0);
+            //    limelight.pipelineSwitch(0);
                 shooterMotor.setVelocity(0);
                 shooterMotor2.setVelocity(0);
             }
@@ -155,19 +157,22 @@ public class TeleOpRebirth extends LinearOpMode {
 //                turretServo.setPower(-1);
 //            }
 
-            if (gamepad1.dpadUpWasPressed() && currentVel < 2360) {
+            if (gamepad2.dpadUpWasPressed() && currentVel < 2360) {
                 currentVel += 236;
-            } else if (gamepad1.dpadDownWasPressed() && currentVel > 0) {
+            } else if (gamepad2.dpadDownWasPressed() && currentVel > 0) {
                 currentVel -= 236;
-            }  if (gamepad1.yWasPressed() && currentVel < 2360) {
-                currentVel += 47.2;
-            } else if (gamepad1.aWasPressed() && currentVel > 0) {
-                currentVel -= 47.2;
-            } else if (gamepad1.xWasPressed()) {
+//            }  if (gamepad2.yWasPressed() && currentVel < 2360) {
+//                currentVel += 47.2;
+//            } else if (gamepad2.aWasPressed() && currentVel > 0) {
+//                currentVel -= 47.2;
+            } else if (gamepad2.xWasPressed()) {
                 currentVel = velPresetOff;
             }
 
-            if (gamepad2.a) {
+            if (gamepad2.aWasPressed()) {
+                intakeToggle = !intakeToggle;
+            }
+            if (intakeToggle) {
                 intakeMotor.setPower(1);
             } else {
                 intakeMotor.setPower(0);
