@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
@@ -25,14 +26,21 @@ public class TeleOpRebirth extends LinearOpMode {
     public DcMotorEx shooterMotor;
     // my god there's two of them
     public DcMotorEx shooterMotor2;
+    public Servo shooterServo;
 
     public CRServo turretServo;
+    public DcMotor turretTransfer;
     public DigitalChannel magLimit;
+
+    public Servo flowerRamp1;
+    public Servo flowerRamp2;
 
     public DcMotorEx intakeMotor;
 
     public boolean toggle = false;
     public boolean intakeToggle = false;
+    public boolean transferToggle = false;
+    public boolean typeToggle = true;
 
     public double currentVel = 1416;
     public double velPresetOff = 0;
@@ -88,9 +96,15 @@ public class TeleOpRebirth extends LinearOpMode {
         shooterMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         shooterMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         shooterMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
+        shooterServo = hardwareMap.get(Servo.class, "shooterServo");
 
-//        turretServo = hardwareMap.get(CRServo.class, "turretServo");
+        turretServo = hardwareMap.get(CRServo.class, "turretServo");
+        turretTransfer = hardwareMap.get(DcMotor.class, "turretTransfer");
+        turretTransfer.setDirection(DcMotorSimple.Direction.REVERSE);
 //        magLimit = hardwareMap.get(DigitalChannel.class, "magLimit");
+
+        flowerRamp1 = hardwareMap.get(Servo.class, "flowerRamp1");
+        flowerRamp2 = hardwareMap.get(Servo.class, "flowerRamp2");
 
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
 
@@ -116,7 +130,7 @@ public class TeleOpRebirth extends LinearOpMode {
             leftBackPower = Range.clip(drive + turn - strafe, -1, 1);
             rightBackPower = Range.clip(drive - turn + strafe, -1, 1);
 
-            // Speed control buttons
+            /* // Speed control buttons
             if (gamepad1.left_bumper) {
                 leftFrontPower /= 2;
                 leftBackPower /= 2;
@@ -129,13 +143,13 @@ public class TeleOpRebirth extends LinearOpMode {
                 leftBackPower *= 1.8;
                 rightFrontPower *= 1.8;
                 rightBackPower *= 1.8;
-            }
+            } */
 
             // Sets the power when gamepad
-            frontLeft.setPower(leftFrontPower /= 1.8);
-            frontRight.setPower(rightFrontPower /= 1.8);
-            backLeft.setPower(leftBackPower /= 1.8);
-            backRight.setPower(rightBackPower /= 1.8);
+            frontLeft.setPower(leftFrontPower /* /= 1.8 */);
+            frontRight.setPower(rightFrontPower /* /= 1.8 */);
+            backLeft.setPower(leftBackPower /* /= 1.8 */);
+            backRight.setPower(rightBackPower /* /= 1.8 */);
 
             if (toggle) {
             //    locatify();
@@ -147,15 +161,46 @@ public class TeleOpRebirth extends LinearOpMode {
                 shooterMotor2.setVelocity(0);
             }
 
+            if (transferToggle) {
+                turretTransfer.setPower(1);
+            } else {
+                turretTransfer.setPower(0);
+            }
+
+            if (typeToggle) {
+                shooterServo.setPosition(1);
+            } else {
+                shooterServo.setPosition(0);
+            }
+
             if (gamepad1.bWasPressed()) {
                 toggle = !toggle;
             }
+            if (gamepad1.aWasPressed()) {
+                transferToggle = !transferToggle;
+            }
+            if (gamepad1.yWasPressed()) {
+                typeToggle = !typeToggle;
+            }
 
-//            if (gamepad1.left_bumper) {
-//                turretServo.setPower(1);
-//            } else if (gamepad1.right_bumper) {
-//                turretServo.setPower(-1);
-//            }
+            if (gamepad2.dpadLeftWasPressed()) {
+                flowerRamp1.setPosition(0);
+                flowerRamp2.setPosition(0);
+            } else if (gamepad2.leftTriggerWasPressed()) {
+                flowerRamp1.setPosition(0.5);
+                flowerRamp2.setPosition(0.5);
+            } else if (gamepad2.dpadRightWasPressed()) {
+                flowerRamp1.setPosition(1);
+                flowerRamp2.setPosition(1);
+            }
+
+            if (gamepad1.left_trigger_pressed) {
+                turretServo.setPower(1);
+            } else if (gamepad1.right_trigger_pressed) {
+                turretServo.setPower(-1);
+            } else {
+                turretServo.setPower(0);
+            }
 
             if (gamepad2.dpadUpWasPressed() && currentVel < 2360) {
                 currentVel += 236;
@@ -173,7 +218,7 @@ public class TeleOpRebirth extends LinearOpMode {
                 intakeToggle = !intakeToggle;
             }
             if (intakeToggle) {
-                intakeMotor.setPower(1);
+                intakeMotor.setVelocity(2360);
             } else {
                 intakeMotor.setPower(0);
             }
@@ -191,13 +236,13 @@ public class TeleOpRebirth extends LinearOpMode {
 //            }
 
             // so what if i just stole the code from last season
-            if (lastRecordedArea <= 3) {
-                currentVel = 1416;
-            } else if (lastRecordedArea > 3 && lastRecordedArea < 10) {
-                currentVel = 944;
-            } else if (lastRecordedArea >= 10) {
-                currentVel = 472;
-            }
+//            if (lastRecordedArea <= 3) {
+//                currentVel = 1416;
+//            } else if (lastRecordedArea > 3 && lastRecordedArea < 10) {
+//                currentVel = 944;
+//            } else if (lastRecordedArea >= 10) {
+//                currentVel = 472;
+//            }
         }
     }
 }
