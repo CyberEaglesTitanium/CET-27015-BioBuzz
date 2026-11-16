@@ -21,7 +21,7 @@ public class DriveNParkRed extends OpMode {
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
     private final Pose start = poseFactory.of(56, 8, 90);
-    private final Pose path1 = poseFactory.of(8, 90, 0);
+    private final Pose path1 = poseFactory.of(10, 96, 0);
     private final Pose path1Control1 = poseFactory.of(18, 6, 0);
 
     public Path path1() {

@@ -44,7 +44,7 @@ public class Constants {
     public static ForesightConfig foresightConfig = new ForesightConfig(
             c -> {
                 Controller primaryTranslationalForward = Controller.proportional(0.4703038761620589);
-                Controller secondaryTranslationalForward = Controller.proportional(0.17376471549086456);
+                Controller secondaryTranslationalForward = Controller.proportional(0.00017376471549086456);
                 Controller primaryTranslationalLateral = Controller.proportional(1.615796459395537);
                 Controller secondaryTranslationalLateral = Controller.proportional(0.5969936168700928);
 
@@ -54,11 +54,11 @@ public class Constants {
                 c.coast.set(Controller.proportionalFeedforward(0.014888497137650508));
                 c.brake.set(Controller.proportionalFeedforward(0.012655222567002931));
 
-                c.headingFeedback.set(Controller.proportional(10.520963471223169));
-                c.headingBrakeCoefficients.set(Vector2D.cartesian(0.371556565880443, -0.10259933694354934));
+                c.headingFeedback.set(Controller.proportional(1.0520963471223169));
+                c.headingBrakeCoefficients.set(Vector2D.cartesian(0.0271556565880443, -0.010259933694354934));
 
-                c.linearBrakeCoefficients.set(Matrix.diag(0.9417810235300897, 0.030083670332909578));
-                c.quadraticBrakeCoefficients.set(Matrix.diag(0.005288777378745336, 6.045512674739049E-4));
+                c.linearBrakeCoefficients.set(Matrix.diag(0.09417810235300897, 0.030083670332909578));
+                c.quadraticBrakeCoefficients.set(Matrix.diag(0.0005288777378745336, 6.045512674739049E-4));
 
                 c.maxAchievableForwardVelocity.set(69.9362204278123);
                 c.maxAchievableStrafeVelocity.set(47.13856911848553);
