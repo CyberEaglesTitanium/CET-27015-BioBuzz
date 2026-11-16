@@ -30,7 +30,6 @@ public class TeleOpRebirth extends LinearOpMode {
 
     public CRServo turretServo;
     public DcMotor turretTransfer;
-    public DigitalChannel magLimit;
 
     public Servo flowerRamp1;
     public Servo flowerRamp2;
@@ -39,11 +38,16 @@ public class TeleOpRebirth extends LinearOpMode {
 
     public boolean toggle = false;
     public boolean intakeToggle = false;
+    public boolean reverseToggle = false;
     public boolean transferToggle = false;
     public boolean typeToggle = true;
 
     public double currentVel = 1416;
     public double velPresetOff = 0;
+
+    // i guess we countin game pieces now
+    public int ballCounter = 0;
+    public DigitalChannel beamBreak;
 
     // LIMExLIGHT
     public Limelight3A limelight;
@@ -105,8 +109,10 @@ public class TeleOpRebirth extends LinearOpMode {
 
         flowerRamp1 = hardwareMap.get(Servo.class, "flowerRamp1");
         flowerRamp2 = hardwareMap.get(Servo.class, "flowerRamp2");
+        flowerRamp2.setDirection(Servo.Direction.REVERSE);
 
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.setPollRateHz(100); // This sets how often we ask Limelight for data (100 times per second)
@@ -130,7 +136,7 @@ public class TeleOpRebirth extends LinearOpMode {
             leftBackPower = Range.clip(drive + turn - strafe, -1, 1);
             rightBackPower = Range.clip(drive - turn + strafe, -1, 1);
 
-            /* // Speed control buttons
+            // Speed control buttons
             if (gamepad1.left_bumper) {
                 leftFrontPower /= 2;
                 leftBackPower /= 2;
@@ -138,7 +144,7 @@ public class TeleOpRebirth extends LinearOpMode {
                 rightBackPower /= 2;
             }
 
-            if (gamepad1.right_bumper) {
+            /* if (gamepad1.right_bumper) {
                 leftFrontPower *= 1.8;
                 leftBackPower *= 1.8;
                 rightFrontPower *= 1.8;
@@ -152,17 +158,19 @@ public class TeleOpRebirth extends LinearOpMode {
             backRight.setPower(rightBackPower /* /= 1.8 */);
 
             if (toggle) {
-            //    locatify();
+                //    locatify();
                 shooterMotor.setVelocity(currentVel);
                 shooterMotor2.setVelocity(currentVel);
             } else {
-            //    limelight.pipelineSwitch(0);
+                //    limelight.pipelineSwitch(0);
                 shooterMotor.setVelocity(0);
                 shooterMotor2.setVelocity(0);
             }
 
-            if (transferToggle) {
+            if (transferToggle && !reverseToggle) {
                 turretTransfer.setPower(1);
+            } else if (transferToggle && reverseToggle) {
+                turretTransfer.setPower(-1);
             } else {
                 turretTransfer.setPower(0);
             }
@@ -176,51 +184,54 @@ public class TeleOpRebirth extends LinearOpMode {
             if (gamepad1.bWasPressed()) {
                 toggle = !toggle;
             }
-            if (gamepad1.aWasPressed()) {
+            if (gamepad2.yWasPressed()) {
                 transferToggle = !transferToggle;
             }
-            if (gamepad1.yWasPressed()) {
+            if (gamepad2.xWasPressed()) {
                 typeToggle = !typeToggle;
             }
 
             if (gamepad2.dpadLeftWasPressed()) {
-                flowerRamp1.setPosition(0);
-                flowerRamp2.setPosition(0);
-            } else if (gamepad2.leftTriggerWasPressed()) {
+                flowerRamp1.setPosition(0.1155);
+                flowerRamp2.setPosition(0.1155);
+            } else if (gamepad2.dpadUpWasPressed()) {
+                flowerRamp1.setPosition(0.429);
+                flowerRamp2.setPosition(0.429);
+            } else if (gamepad2.dpadRightWasPressed()) {
                 flowerRamp1.setPosition(0.5);
                 flowerRamp2.setPosition(0.5);
-            } else if (gamepad2.dpadRightWasPressed()) {
-                flowerRamp1.setPosition(1);
-                flowerRamp2.setPosition(1);
             }
 
-            if (gamepad1.left_trigger_pressed) {
+            if (gamepad2.left_trigger_pressed) {
                 turretServo.setPower(1);
-            } else if (gamepad1.right_trigger_pressed) {
+            } else if (gamepad2.right_trigger_pressed) {
                 turretServo.setPower(-1);
             } else {
                 turretServo.setPower(0);
             }
 
-            if (gamepad2.dpadUpWasPressed() && currentVel < 2360) {
+            if (gamepad1.dpadUpWasPressed() && currentVel < 2360) {
                 currentVel += 236;
-            } else if (gamepad2.dpadDownWasPressed() && currentVel > 0) {
+            } else if (gamepad1.dpadDownWasPressed() && currentVel > 0) {
                 currentVel -= 236;
 //            }  if (gamepad2.yWasPressed() && currentVel < 2360) {
 //                currentVel += 47.2;
 //            } else if (gamepad2.aWasPressed() && currentVel > 0) {
 //                currentVel -= 47.2;
-            } else if (gamepad2.xWasPressed()) {
-                currentVel = velPresetOff;
             }
 
             if (gamepad2.aWasPressed()) {
                 intakeToggle = !intakeToggle;
             }
-            if (intakeToggle) {
+            if (gamepad2.bWasPressed()) {
+                reverseToggle = !reverseToggle;
+            }
+            if (intakeToggle && !reverseToggle) {
                 intakeMotor.setVelocity(2360);
+            } else if (intakeToggle && reverseToggle){
+                intakeMotor.setVelocity(-2360);
             } else {
-                intakeMotor.setPower(0);
+                intakeMotor.setVelocity(0);
             }
 
             /* 以下のコードは、「コントローラ2」が動作する必要があります。

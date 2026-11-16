@@ -38,6 +38,7 @@ public class MovingForward extends OpMode {
     private Command routine() {
         return sequential(
                 follow(follower, straightLinePath()),
+                // put shooter testing here!!
                 follow(follower, otherLinePath())
         );
     }
@@ -52,7 +53,7 @@ public class MovingForward extends OpMode {
 
     @Override
     public void start() {
-        schedule(follow(follower, straightLinePath()));
+        schedule(routine());
     }
 
     @Override
