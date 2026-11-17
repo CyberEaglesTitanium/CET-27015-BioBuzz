@@ -109,7 +109,7 @@ public class TeleOpRebirth extends LinearOpMode {
 
         flowerRamp1 = hardwareMap.get(Servo.class, "flowerRamp1");
         flowerRamp2 = hardwareMap.get(Servo.class, "flowerRamp2");
-        flowerRamp2.setDirection(Servo.Direction.REVERSE);
+        // flowerRamp2.setDirection(Servo.Direction.REVERSE);
 
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
