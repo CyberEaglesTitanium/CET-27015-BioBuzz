@@ -31,10 +31,10 @@ public class ShootNParkRed extends OpMode {
 
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
-    private final Pose start = poseFactory.of(56, 8, 90);
-    private final Pose path1 = poseFactory.of(56, 24, 90);
-    private final Pose point2Start = poseFactory.of(56, 24, 90);
-    private final Pose point2 = poseFactory.of(10, 90, 0);
+    private final Pose start = poseFactory.of(36, 9, 0);
+    private final Pose path1 = poseFactory.of(30, 12, 45);
+    private final Pose point2Start = poseFactory.of(30, 12, 45);
+    private final Pose point2 = poseFactory.of(10, 100, 0);
     private final Pose point2Control1 = poseFactory.of(19, 33, 0);
 
     // motors
@@ -72,15 +72,15 @@ public class ShootNParkRed extends OpMode {
                         shooterMotor1.setVelocity(1416);
                         shooterMotor2.setVelocity(1416);
                     }),
-                    waitUntil(() -> shooterMotor1.getVelocity() >= 1350 && shooterMotor2.getVelocity() >= 1350),
+                    waitMs(2500),
                     instant(() -> {
                         turretTransfer.setPower(1);
                     }),
-                    waitMs(200),
+                    waitMs(1000),
                     instant(() -> {
                         intakeMotor.setPower(1);
                     }),
-                    waitMs(1500),
+                    waitMs(2500),
                     instant(() -> {
                             shooterMotor1.setVelocity(0);
                             shooterMotor2.setVelocity(0);
@@ -95,8 +95,8 @@ public class ShootNParkRed extends OpMode {
             })
     );
 
-    private Command polRamp = instant(() -> shooterServo.setPosition(1));
-    private Command nectRamp = instant(() -> shooterServo.setPosition(0));
+    Command polRamp = instant(() -> shooterServo.setPosition(1));
+    Command nectRamp = instant(() -> shooterServo.setPosition(0));
 
     private Command routine() {
         return sequential(
@@ -119,6 +119,7 @@ public class ShootNParkRed extends OpMode {
         shooterMotor1.setDirection(DcMotorSimple.Direction.REVERSE);
         shooterMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
         shooterServo = hardwareMap.get(Servo.class, "shooterServo");
+        shooterServo.setDirection(Servo.Direction.REVERSE);
 
         turretTransfer = hardwareMap.get(DcMotor.class, "turretTransfer");
         turretTransfer.setDirection(DcMotorSimple.Direction.REVERSE);

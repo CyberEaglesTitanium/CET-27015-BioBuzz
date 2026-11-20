@@ -121,6 +121,8 @@ public class TeleOpRebirth extends LinearOpMode {
 
         waitForStart();
         while(opModeIsActive()) {
+            telemetry.addData("Shooter Velocity", currentVel);
+
             double leftFrontPower;
             double rightFrontPower;
             double leftBackPower;
@@ -210,14 +212,14 @@ public class TeleOpRebirth extends LinearOpMode {
                 turretServo.setPower(0);
             }
 
-            if (gamepad1.dpadUpWasPressed() && currentVel < 2360) {
-                currentVel += 236;
-            } else if (gamepad1.dpadDownWasPressed() && currentVel > 0) {
-                currentVel -= 236;
-//            }  if (gamepad2.yWasPressed() && currentVel < 2360) {
-//                currentVel += 47.2;
-//            } else if (gamepad2.aWasPressed() && currentVel > 0) {
-//                currentVel -= 47.2;
+//            if (gamepad1.dpadUpWasPressed() && currentVel < 2360) {
+//                currentVel += 236;
+//            } else if (gamepad1.dpadDownWasPressed() && currentVel > 0) {
+//                currentVel -= 236;
+            /*}*/  if (gamepad2.dpadUpWasPressed() && currentVel < 2360) {
+                currentVel += 47.2;
+            } else if (gamepad2.dpadDownWasPressed() && currentVel > 0) {
+                currentVel -= 47.2;
             }
 
             if (gamepad2.aWasPressed()) {
