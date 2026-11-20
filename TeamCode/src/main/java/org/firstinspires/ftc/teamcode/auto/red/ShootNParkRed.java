@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto.red;
 
 import static com.pedropathing.ivy.Scheduler.schedule;
+import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
@@ -12,6 +13,7 @@ import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.pedropathing.utils.Timer;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -20,6 +22,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
+@Autonomous(name = "Shoot!!")
 public class ShootNParkRed extends OpMode {
     private Follower follower;
 
@@ -44,7 +47,7 @@ public class ShootNParkRed extends OpMode {
     public Servo flowerRamp2;
 
     // the timer!!
-    private Timer commandTimer;
+    private Timer commandTimer = new Timer();
 
     public Path path1() {
         return Paths.line(start, path1).linear(start, path1);
@@ -63,7 +66,7 @@ public class ShootNParkRed extends OpMode {
                 commandTimer.reset();
                 shooterMotor1.setVelocity(1416);
                 shooterMotor2.setVelocity(1416);
-                if (shooterMotor1.getVelocity() > 1388) {
+                if (shooterMotor1.getVelocity() > 1000) {
                     turretTransfer.setPower(1);
                     commandTimer.reset();
                     if (commandTimer.milliseconds() >= 200) {
@@ -72,7 +75,7 @@ public class ShootNParkRed extends OpMode {
                 }
                 commandTimer.reset();
             })
-            .setDone(() -> commandTimer.seconds() > 5)
+            .setDone(() -> commandTimer.seconds() > 15)
             .setEnd(endCondition -> {
                 flowerRamp1.setPosition(0.1155);
                 flowerRamp2.setPosition(0.1155);
@@ -95,13 +98,16 @@ public class ShootNParkRed extends OpMode {
         return sequential(
                 follow(follower, path1()),
                 launch,
-                follow(follower, path2())
+                parallel(
+                        follow(follower, path2())
+                )
+
         );
     }
 
     @Override
     public void init() {
-        shooterMotor1 = hardwareMap.get(DcMotorEx.class, "shootMotor1");
+        shooterMotor1 = hardwareMap.get(DcMotorEx.class, "shootMotor");
         shooterMotor2 = hardwareMap.get(DcMotorEx.class, "shootMotor2");
         shooterMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         shooterMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

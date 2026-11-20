@@ -184,7 +184,7 @@ public class TeleOpRebirth extends LinearOpMode {
             if (gamepad1.bWasPressed()) {
                 toggle = !toggle;
             }
-            if (gamepad2.yWasPressed()) {
+            if (gamepad1.yWasPressed()) {
                 transferToggle = !transferToggle;
             }
             if (gamepad2.xWasPressed()) {
