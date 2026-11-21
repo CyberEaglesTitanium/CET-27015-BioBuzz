@@ -32,8 +32,8 @@ public class ShootNParkRed extends OpMode {
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
     private final Pose start = poseFactory.of(36, 9, 0);
-    private final Pose path1 = poseFactory.of(30, 12, 45);
-    private final Pose point2Start = poseFactory.of(30, 12, 45);
+    private final Pose path1 = poseFactory.of(30, 12, 50);
+    private final Pose point2Start = poseFactory.of(30, 12, 50);
     private final Pose point2 = poseFactory.of(10, 100, 0);
     private final Pose point2Control1 = poseFactory.of(19, 33, 0);
 
@@ -129,6 +129,7 @@ public class ShootNParkRed extends OpMode {
 
         flowerRamp1 = hardwareMap.get(Servo.class, "flowerRamp1");
         flowerRamp2 = hardwareMap.get(Servo.class, "flowerRamp2");
+        flowerRamp2.setDirection(Servo.Direction.REVERSE);
 
         Scheduler.reset();
 
