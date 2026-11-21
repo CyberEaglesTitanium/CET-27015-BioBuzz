@@ -181,10 +181,10 @@ public class TeleOpRebirth extends LinearOpMode {
 
             if (typeToggle) {
                 shooterServo.setPosition(1);
-                shooterLight.setPosition(0.388);
+                //shooterLight.setPosition(0.388);
             } else {
                 shooterServo.setPosition(0.3);
-                shooterLight.setPosition(0.7);
+                //shooterLight.setPosition(0.7);
             }
 
             if (gamepad1.bWasPressed()) {
