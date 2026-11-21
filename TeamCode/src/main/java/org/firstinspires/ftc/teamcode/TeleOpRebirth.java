@@ -27,6 +27,7 @@ public class TeleOpRebirth extends LinearOpMode {
     // my god there's two of them
     public DcMotorEx shooterMotor2;
     public Servo shooterServo;
+    public Servo shooterLight;
 
     public CRServo turretServo;
     public DcMotor turretTransfer;
@@ -180,8 +181,10 @@ public class TeleOpRebirth extends LinearOpMode {
 
             if (typeToggle) {
                 shooterServo.setPosition(1);
+                shooterLight.setPosition(0.388);
             } else {
-                shooterServo.setPosition(0.15);
+                shooterServo.setPosition(0.3);
+                shooterLight.setPosition(0.7);
             }
 
             if (gamepad1.bWasPressed()) {
@@ -230,11 +233,11 @@ public class TeleOpRebirth extends LinearOpMode {
                 reverseToggle = !reverseToggle;
             }
             if (intakeToggle && !reverseToggle) {
-                intakeMotor.setVelocity(2360);
+                intakeMotor.setPower(1);
             } else if (intakeToggle && reverseToggle){
-                intakeMotor.setVelocity(-2360);
+                intakeMotor.setPower(-1);
             } else {
-                intakeMotor.setVelocity(0);
+                intakeMotor.setPower(0);
             }
 
             /* 以下のコードは、「コントローラ2」が動作する必要があります。
