@@ -103,7 +103,7 @@ public class ShootNParkRed extends OpMode {
                 follow(follower, path1()),
                 polRamp,
                 launch,
-                nectRamp,
+    //            nectRamp,
                 parallel(
                         follow(follower, path2())
                 )

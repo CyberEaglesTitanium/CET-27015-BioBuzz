@@ -101,6 +101,7 @@ public class TeleOpRebirth extends LinearOpMode {
         shooterMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         shooterMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
         shooterServo = hardwareMap.get(Servo.class, "shooterServo");
+        shooterServo.setDirection(Servo.Direction.REVERSE);
 
         turretServo = hardwareMap.get(CRServo.class, "turretServo");
         turretTransfer = hardwareMap.get(DcMotor.class, "turretTransfer");
@@ -109,7 +110,7 @@ public class TeleOpRebirth extends LinearOpMode {
 
         flowerRamp1 = hardwareMap.get(Servo.class, "flowerRamp1");
         flowerRamp2 = hardwareMap.get(Servo.class, "flowerRamp2");
-        // flowerRamp2.setDirection(Servo.Direction.REVERSE);
+        flowerRamp2.setDirection(Servo.Direction.REVERSE);
 
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -180,7 +181,7 @@ public class TeleOpRebirth extends LinearOpMode {
             if (typeToggle) {
                 shooterServo.setPosition(1);
             } else {
-                shooterServo.setPosition(0);
+                shooterServo.setPosition(0.15);
             }
 
             if (gamepad1.bWasPressed()) {
@@ -204,13 +205,13 @@ public class TeleOpRebirth extends LinearOpMode {
                 flowerRamp2.setPosition(0.5);
             }
 
-            if (gamepad2.left_trigger_pressed) {
-                turretServo.setPower(1);
-            } else if (gamepad2.right_trigger_pressed) {
-                turretServo.setPower(-1);
-            } else {
-                turretServo.setPower(0);
-            }
+//            if (gamepad2.left_trigger_pressed) {
+//                turretServo.setPower(1);
+//            } else if (gamepad2.right_trigger_pressed) {
+//                turretServo.setPower(-1);
+//            } else {
+//                turretServo.setPower(0);
+//            }
 
 //            if (gamepad1.dpadUpWasPressed() && currentVel < 2360) {
 //                currentVel += 236;
